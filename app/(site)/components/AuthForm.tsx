@@ -6,13 +6,22 @@ import axios from "axios";
 
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { IconType } from "react-icons";
 
 import { SocialLoginTypes, Variant } from "@/@types/models";
 
 import Input from "@/components/inputs/Input";
 import Button from "@/components/Button";
-import AuthSocialButton from "@/app/(site)/components/AuthSocialButton";
-import { signIn } from "next-auth/react";
+import IconButton from "@/components/IconButton";
+
+const socialLogins: Array<{
+  type: SocialLoginTypes;
+  icon: IconType;
+}> = [
+  { type: "github", icon: BsGithub },
+  { type: "google", icon: BsGoogle },
+];
 
 const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>("LOGIN");
@@ -56,7 +65,7 @@ const AuthForm = () => {
         if (signInResponse?.error) {
           toast.error("Invalid creds");
         } else if (signInResponse?.ok) {
-          toast.success("Logged in successfully");
+          toast.success("Logged in");
         }
       }
     } catch {
@@ -66,8 +75,20 @@ const AuthForm = () => {
     }
   };
 
-  const socialActions = (action: SocialLoginTypes) => {
-    setIsLoading(true);
+  const socialActions = async (action: SocialLoginTypes) => {
+    try {
+      setIsLoading(true);
+      const signInResponse = await signIn(action, { redirect: false });
+      if (signInResponse?.error) {
+        toast.error("Invalid creds");
+      } else if (signInResponse?.ok) {
+        toast.success("Logged in");
+      }
+    } catch {
+      toast.error("Some error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -112,15 +133,13 @@ const AuthForm = () => {
           </div>
 
           <div className='mt-6 flex gap-2'>
-            <AuthSocialButton
-              icon={BsGithub}
-              onClick={() => socialActions("github")}
-            />
-
-            <AuthSocialButton
-              icon={BsGoogle}
-              onClick={() => socialActions("google")}
-            />
+            {socialLogins.map(({ type, icon }) => (
+              <IconButton
+                key={type}
+                icon={icon}
+                onClick={() => socialActions(type)}
+              />
+            ))}
           </div>
         </div>
 
