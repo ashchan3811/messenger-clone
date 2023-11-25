@@ -1,13 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import toast from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { IconType } from "react-icons";
+import { useRouter } from "next/navigation";
 
 import { SocialLoginTypes, Variant } from "@/@types/models";
 
@@ -26,6 +27,15 @@ const socialLogins: Array<{
 const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
+  const session = useSession();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.push("/users");
+    }
+  }, [session?.status, router]);
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -53,7 +63,17 @@ const AuthForm = () => {
     try {
       if (variant === "REGISTER") {
         await axios.post("/api/register", data);
-        toast.success("");
+        const signInResponse = await signIn("credentials", {
+          ...data,
+          redirect: false,
+        });
+
+        if (signInResponse?.error) {
+          toast.error("Invalid creds");
+        } else if (signInResponse?.ok) {
+          toast.success("Logged in");
+          router.push("/users");
+        }
       }
 
       if (variant === "LOGIN") {
@@ -66,6 +86,7 @@ const AuthForm = () => {
           toast.error("Invalid creds");
         } else if (signInResponse?.ok) {
           toast.success("Logged in");
+          router.push("/users");
         }
       }
     } catch {
