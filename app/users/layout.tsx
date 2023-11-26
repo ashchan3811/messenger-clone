@@ -1,4 +1,4 @@
-import { IHaveChildren } from "@/@types/children";
+import { IHaveChildren } from "@/types";
 import getUsers from "@/actions/getUsers";
 
 import Sidebar from "@/components/sidebar/Sidebar";
