@@ -30,7 +30,7 @@ const ConversationForm = ({}: ConversationFormProps) => {
 
   return (
     <div className="w-full py-4 px-4 bg-white border-t flex items-center gap-2 lg:gap-4">
-      <HiPhoto size={30} className="text-sky-500 cursor-pointer" />
+      <HiPhoto size={30} className="text-sky-500 cursor-pointer hover:text-sky-600" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center gap-2 lg:gap-4 w-full"
@@ -46,7 +46,7 @@ const ConversationForm = ({}: ConversationFormProps) => {
           type="submit"
           className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"
         >
-          <HiPaperAirplane />
+          <HiPaperAirplane size={18} className="text-white" />
         </button>
       </form>
     </div>
