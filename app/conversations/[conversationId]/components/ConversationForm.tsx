@@ -6,6 +6,7 @@ import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import clsx from "clsx";
+import { CldUploadButton } from "next-cloudinary";
 
 import useConversation from "@/hooks/useConversation";
 import MessageInput from "./MessageInput";
@@ -40,12 +41,35 @@ const ConversationForm = ({}: ConversationFormProps) => {
     }
   };
 
+  const handleUpload = async (result: any) => {
+    try {
+      setIsSending(true);
+
+      await axios.post("/api/messages", {
+        image: result?.info?.secure_url,
+        conversationId,
+      });
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <div className="w-full py-4 px-4 bg-white border-t flex items-center gap-2 lg:gap-4">
-      <HiPhoto
-        size={30}
-        className="text-sky-500 cursor-pointer hover:text-sky-600"
-      />
+      <CldUploadButton
+        options={{
+          maxFiles: 1,
+        }}
+        onUpload={handleUpload}
+        uploadPreset="ffu0ekng"
+      >
+        <HiPhoto
+          size={30}
+          className="text-sky-500 cursor-pointer hover:text-sky-600"
+        />
+      </CldUploadButton>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center gap-2 lg:gap-4 w-full"

@@ -30,7 +30,7 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
           className="lg:hidden block text-sky-500 hover:text-sky-600 transition cursor-pointer"
           href={"/conversation"}
         >
-          <HiChevronLeft />
+          <HiChevronLeft size={24}/>
         </Link>
         <Avatar user={otherUser} />
         <div className="flex flex-col">
