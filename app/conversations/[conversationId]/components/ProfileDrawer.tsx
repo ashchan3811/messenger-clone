@@ -2,10 +2,11 @@
 
 import Avatar from "@/components/Avatar";
 import Drawer from "@/components/Drawer";
+import Modal from "@/components/Modal";
 import useOtherUser from "@/hooks/useOtherUser";
 import { IConversationWithUsers } from "@/types";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { IoTrash } from "react-icons/io5";
 
 interface ProfileDrawerProps {
@@ -20,6 +21,7 @@ const ProfileDrawer = ({
   onClose,
 }: ProfileDrawerProps) => {
   const otherUser = useOtherUser(conversation);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
@@ -38,53 +40,58 @@ const ProfileDrawer = ({
   }, [conversation]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} direction={"right"}>
-      <div className="flex flex-col items-center">
-        <div className="mb-2">
-          <Avatar user={otherUser} />
-        </div>
-        <div>{title}</div>
-        <div className="text-sm text-gray-500">{statusTest}</div>
-        <div className="flex gap-10 my-8">
-          <div
-            onClick={() => {}}
-            className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75"
-          >
-            <div className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center">
-              <IoTrash size={20} />
+    <>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <p>Hello Modal</p>
+      </Modal>
+      <Drawer isOpen={isOpen} onClose={onClose} direction={"right"}>
+        <div className="flex flex-col items-center">
+          <div className="mb-2">
+            <Avatar user={otherUser} />
+          </div>
+          <div>{title}</div>
+          <div className="text-sm text-gray-500">{statusTest}</div>
+          <div className="flex gap-10 my-8">
+            <div
+              onClick={() => setIsModalOpen(true)}
+              className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75"
+            >
+              <div className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center">
+                <IoTrash size={20} />
+              </div>
+              <div className="text-sm font-light text-neutral-600">Delete</div>
             </div>
-            <div className="text-sm font-light text-neutral-600">Delete</div>
+          </div>
+          <div className="w-full pb-5 pt-5 sm:px-0 sm:pt-0">
+            <div className="space-y-8 px-4 sm:space-y-6 sm:px-6">
+              {!conversation.isGroup && (
+                <>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                      Email
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
+                      {otherUser.email}
+                    </dd>
+                  </div>
+
+                  <hr />
+
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                      Joined
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
+                      <time dateTime={joinedDate}>{joinedDate}</time>
+                    </dd>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <div className="w-full pb-5 pt-5 sm:px-0 sm:pt-0">
-          <div className="space-y-8 px-4 sm:space-y-6 sm:px-6">
-            {!conversation.isGroup && (
-              <>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                    Email
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                    {otherUser.email}
-                  </dd>
-                </div>
-
-                <hr />
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                    Joined
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                    <time dateTime={joinedDate}>{joinedDate}</time>
-                  </dd>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </Drawer>
+      </Drawer>
+    </>
   );
 };
 
