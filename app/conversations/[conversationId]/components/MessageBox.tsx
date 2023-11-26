@@ -28,7 +28,7 @@ const MessageBox = ({ isLast, message }: MessageBoxProps) => {
       .join(", ");
   }, [message.seen, message.sender.email]);
 
-  const container = clsx("flex gap p-4", isOwn && "justify-end");
+  const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
 
   const avatar = clsx(isOwn && "order-2");
 
