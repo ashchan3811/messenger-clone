@@ -31,7 +31,7 @@ const Button = ({
           "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
         variant != "secondary" &&
           variant != "danger" &&
-          "bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600"
+          "bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600",
       )}
     >
       {children}

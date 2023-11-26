@@ -1,14 +1,14 @@
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
-import { IConversation } from "@/types";
+import { IConversation, IConversationWithUsers } from "@/types";
 
-const useOtherUser = (conversation: IConversation) => {
+const useOtherUser = (conversation: IConversation | IConversationWithUsers) => {
   const session = useSession();
   const otherUser = useMemo(() => {
     const currentUserEmail = session?.data?.user?.email;
 
     const otherUserList = conversation.users.filter(
-      (user) => user.email !== currentUserEmail
+      (user) => user.email !== currentUserEmail,
     );
 
     return otherUserList[0];

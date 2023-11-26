@@ -12,7 +12,7 @@ const ConversationLayout = async ({ children }: ConversationLayoutProps) => {
 
   return (
     <Sidebar>
-      <div className='h-full'>
+      <div className="h-full">
         <ConversationList initialConversations={conversations} />
         {children}
       </div>

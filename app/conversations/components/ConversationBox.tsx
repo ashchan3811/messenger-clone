@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState, useMemo } from "react";
-import axios from "axios";
+import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
@@ -55,26 +54,26 @@ const ConversationBox = ({ conversation, selected }: ConversationBoxProps) => {
       onClick={handleClick}
       className={clsx(
         "w-full relative flex items-center space-x-3 hover:bg-neutral-100 rounded-lg transition cursor-pointer p-3",
-        selected ? "bg-neutral-100" : "bg-white"
+        selected ? "bg-neutral-100" : "bg-white",
       )}
     >
       <Avatar user={otherUser} />
-      <div className='min-w-0 flex-1'>
-        <div className='focus:outline-none'>
-          <div className='flex justify-between items-center mb-1'>
-            <p className='text-md font-medium text-gray-900'>
+      <div className="min-w-0 flex-1">
+        <div className="focus:outline-none">
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-md font-medium text-gray-900">
               {conversation.name || otherUser?.name}
             </p>
             {lastMessage?.createdAt && (
-              <p className='text-xs text-gray-400 font-light'>
-                {format(lastMessage.createdAt, "p")}
+              <p className="text-xs text-gray-400 font-light">
+                {format(new Date(lastMessage.createdAt), "p")}
               </p>
             )}
           </div>
           <p
             className={clsx(
               "truncate text-sm",
-              hasSeen ? "text-gray-500" : "text-black font-medium"
+              hasSeen ? "text-gray-500" : "text-black font-medium",
             )}
           >
             {lastMessageText}
