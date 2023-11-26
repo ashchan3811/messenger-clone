@@ -30,7 +30,7 @@ const CoversationDetailPage = async ({
     <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <ConversationHeader conversation={conversation} />
-        <ConversationBody />
+        <ConversationBody initialMessages={messages} />
         <ConversationForm />
       </div>
     </div>

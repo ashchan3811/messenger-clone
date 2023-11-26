@@ -28,7 +28,7 @@ const ConversationHeader = ({ conversation }: ConversationHeaderProps) => {
       <div className="flex gap-x-3 items-center">
         <Link
           className="lg:hidden block text-sky-500 hover:text-sky-600 transition cursor-pointer"
-          href={"/conversation"}
+          href={"/conversations"}
         >
           <HiChevronLeft size={24}/>
         </Link>
