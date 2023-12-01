@@ -1,13 +1,15 @@
 "use client";
 
-import Avatar from "@/components/Avatar";
-import Drawer from "@/components/Drawer";
-import Modal from "@/components/Modal";
-import useOtherUser from "@/hooks/useOtherUser";
-import { IConversationWithUsers } from "@/types";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
 import { IoTrash } from "react-icons/io5";
+
+import Avatar from "@/components/Avatar";
+import Drawer from "@/components/Drawer";
+import useOtherUser from "@/hooks/useOtherUser";
+import { IConversationWithUsers } from "@/types";
+
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 interface ProfileDrawerProps {
   conversation: IConversationWithUsers;
@@ -21,7 +23,7 @@ const ProfileDrawer = ({
   onClose,
 }: ProfileDrawerProps) => {
   const otherUser = useOtherUser(conversation);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
@@ -41,9 +43,11 @@ const ProfileDrawer = ({
 
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <p>Hello Modal</p>
-      </Modal>
+      <DeleteConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+      />
+
       <Drawer isOpen={isOpen} onClose={onClose} direction={"right"}>
         <div className="flex flex-col items-center">
           <div className="mb-2">
@@ -53,7 +57,7 @@ const ProfileDrawer = ({
           <div className="text-sm text-gray-500">{statusTest}</div>
           <div className="flex gap-10 my-8">
             <div
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsConfirmOpen(true)}
               className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75"
             >
               <div className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center">

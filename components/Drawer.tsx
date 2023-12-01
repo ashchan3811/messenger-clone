@@ -13,6 +13,20 @@ interface DrawerProps extends IHaveChildren {
 }
 
 const Drawer = ({ isOpen, onClose, direction, children }: DrawerProps) => {
+  const animations = {
+    left: {
+      enterTo: "translate-x-full",
+      enterFrom: "translate-x-[-100%]",
+      leaveTo: "translate-x-[-100%]",
+      leaveFrom: "translate-x-full",
+    },
+    right: {
+      enterTo: "translate-x-0",
+      enterFrom: "translate-x-full",
+      leaveTo: "translate-x-full",
+      leaveFrom: "translate-x-0",
+    },
+  };
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className={"relative z-50"} onClose={onClose}>
@@ -39,23 +53,11 @@ const Drawer = ({ isOpen, onClose, direction, children }: DrawerProps) => {
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500"
-                enterFrom={
-                  direction == "right"
-                    ? "translate-x-full"
-                    : "translate-x-[-100%]"
-                }
-                enterTo={
-                  'direction == "right" ? "translate-x-0" : "translate-x-full"'
-                }
+                enterFrom={animations[direction].enterFrom}
+                enterTo={animations[direction].enterTo}
                 leave="transform transition ease-in-out duration-500"
-                leaveFrom={
-                  direction == "right" ? "translate-x-0" : "translate-x-full"
-                }
-                leaveTo={
-                  direction == "right"
-                    ? "translate-x-full"
-                    : "translate-x-[-100%]"
-                }
+                leaveFrom={animations[direction].leaveFrom}
+                leaveTo={animations[direction].leaveTo}
               >
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <div className="flex h-full flex-col overflow-y-auto bg-white py-6 shadow-xl">
