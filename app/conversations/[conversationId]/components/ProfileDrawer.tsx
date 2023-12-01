@@ -9,7 +9,7 @@ import Drawer from "@/components/Drawer";
 import useOtherUser from "@/hooks/useOtherUser";
 import { IConversationWithUsers } from "@/types";
 
-import DeleteConfirmModal from "./DeleteConfirmModal";
+import DeleteConversationModal from "./DeleteConversationModal";
 
 interface ProfileDrawerProps {
   conversation: IConversationWithUsers;
@@ -43,7 +43,7 @@ const ProfileDrawer = ({
 
   return (
     <>
-      <DeleteConfirmModal
+      <DeleteConversationModal
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
       />
