@@ -3,20 +3,26 @@
 import { FiAlertTriangle } from "react-icons/fi";
 
 import { Dialog } from "@headlessui/react";
+
 import Modal from "@/components/modals/Modal";
+import Button from "@/components/Button";
 
 interface DeleteConfirmModalProps {
   isOpen?: boolean;
   onClose: () => void;
+  onClick: () => void;
   title: string;
   message: string;
+  btnText: string;
 }
 
 const DeleteConfirmModal = ({
   isOpen,
   onClose,
+  onClick,
   title,
   message,
+  btnText,
 }: DeleteConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -32,9 +38,14 @@ const DeleteConfirmModal = ({
             {title}
           </Dialog.Title>
           <div className="mt-2">
-            <p>{message}</p>
+            <p className="text-sm text-gray-500">{message}</p>
           </div>
         </div>
+      </div>
+      <div className="mt-5 sm:mt-4 sm:flex sm:flex-grow-reverse">
+        <Button type="button" fullWidth={false} onClick={onClick}>
+          {btnText}
+        </Button>
       </div>
     </Modal>
   );

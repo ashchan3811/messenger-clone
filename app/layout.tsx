@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { IHaveChildren } from "@/types/children";
+import { IHaveChildren } from "@/types";
 import ToasterContext from "@/contexts/ToasterContext";
 import AuthContext from "@/contexts/AuthContext";
 

@@ -1,4 +1,4 @@
-import { IHaveChildren } from "@/types/children";
+import { IHaveChildren } from "@/types";
 
 import clsx from "clsx";
 

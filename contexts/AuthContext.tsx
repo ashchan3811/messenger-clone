@@ -2,7 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 
-import { IHaveChildren } from "@/types/children";
+import { IHaveChildren } from "@/types";
 
 interface AuthContextProps extends IHaveChildren {}
 

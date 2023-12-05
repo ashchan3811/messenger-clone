@@ -10,7 +10,7 @@ import { signIn, useSession } from "next-auth/react";
 import { IconType } from "react-icons";
 import { useRouter } from "next/navigation";
 
-import { SocialLoginTypes, Variant } from "@/types/models";
+import { SocialLoginTypes, Variant } from "@/types";
 
 import Input from "@/components/inputs/Input";
 import Button from "@/components/Button";
