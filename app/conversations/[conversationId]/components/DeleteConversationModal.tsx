@@ -39,7 +39,10 @@ const DeleteConversationModal = ({
     <DeleteConfirmModal
       isOpen={isOpen}
       onClose={onClose}
+      onClick={onDelete}
+      btnText={"Delete"}
       title={"Delete Conversation"}
+      disabled={loading}
       message={
         "Are you sure you want to delete this conversation? This action cannot be undone."
       }
