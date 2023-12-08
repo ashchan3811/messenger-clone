@@ -1,13 +1,14 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
 import { format } from "date-fns";
 
 import Avatar from "@/components/Avatar";
 import { IMessage } from "@/types";
 import Image from "next/image";
+import ImageModal from "./ImageModal";
 
 interface MessageBoxProps {
   isLast: boolean;
@@ -16,6 +17,7 @@ interface MessageBoxProps {
 
 const MessageBox = ({ isLast, message }: MessageBoxProps) => {
   const session = useSession();
+  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   const isOwn = useMemo(() => {
     return session?.data?.user?.email === message?.sender?.email;
@@ -28,7 +30,7 @@ const MessageBox = ({ isLast, message }: MessageBoxProps) => {
       .join(", ");
   }, [message.seen, message.sender.email]);
 
-  const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
+  const container = clsx("flex gap-3 p-4 message-item", isOwn && "justify-end");
 
   const avatar = clsx(isOwn && "order-2");
 
@@ -53,14 +55,21 @@ const MessageBox = ({ isLast, message }: MessageBoxProps) => {
           </div>
         </div>
         <div className={messageClsx}>
+          <ImageModal
+            isOpen={imageModalOpen}
+            onClose={() => setImageModalOpen(false)}
+            src={message.image!}
+          />
           {message.image ? (
-            <Image
-              src={message.image}
-              alt="message-image"
-              height="288"
-              width="288"
-              className="object-cover cursor-pointer hover:scale-110 transition translate"
-            />
+            <div className="w-[288px] h-[288px] relative">
+              <Image
+                onClick={() => setImageModalOpen(true)}
+                src={message.image}
+                alt="message-image"
+                fill
+                className="object-cover cursor-pointer hover:scale-110 transition translate"
+              />
+            </div>
           ) : (
             <div>{message.body}</div>
           )}
