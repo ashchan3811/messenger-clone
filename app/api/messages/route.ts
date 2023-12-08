@@ -1,7 +1,10 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import { NextResponse } from "next/server";
+import _ from "lodash";
 
 import db from "@/lib/db";
+import { pusherServer } from "@/lib/pusher";
+import { PUSHER_EVENTS } from "@/types";
 
 export async function POST(req: Request) {
   try {
@@ -39,7 +42,7 @@ export async function POST(req: Request) {
       },
     });
 
-    await db.conversation.update({
+    const updatedConversation = await db.conversation.update({
       where: {
         id: conversationId,
       },
@@ -59,6 +62,20 @@ export async function POST(req: Request) {
           },
         },
       },
+    });
+
+    await pusherServer.trigger(
+      conversationId,
+      PUSHER_EVENTS.newMessage,
+      newMessage,
+    );
+
+    const lastMessage = _.last(updatedConversation.messages);
+    updatedConversation.users.map((user) => {
+      pusherServer.trigger(user.email!, PUSHER_EVENTS.updateConversation, {
+        id: conversationId,
+        message: [lastMessage],
+      });
     });
 
     return NextResponse.json(newMessage);

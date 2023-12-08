@@ -22,3 +22,8 @@ export type IMessage = IMessageList[number];
 export type IConversationWithUsers = Conversation & {
   users: User[];
 };
+
+export const PUSHER_EVENTS = {
+  newMessage: "messages:new",
+  updateConversation: "conversation:update",
+};
