@@ -63,7 +63,7 @@ const ConversationForm = ({}: ConversationFormProps) => {
           maxFiles: 1,
         }}
         onUpload={handleUpload}
-        uploadPreset="ffu0ekng"
+        uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_RESET}
       >
         <HiPhoto
           size={30}
