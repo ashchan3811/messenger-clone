@@ -10,6 +10,7 @@ import useOtherUser from "@/hooks/useOtherUser";
 import { IConversationWithUsers } from "@/types";
 
 import DeleteConversationModal from "./DeleteConversationModal";
+import AvatarGroup from "@/components/AvatarGroup";
 
 interface ProfileDrawerProps {
   conversation: IConversationWithUsers;
@@ -51,7 +52,11 @@ const ProfileDrawer = ({
       <Drawer isOpen={isOpen} onClose={onClose} direction={"right"}>
         <div className="flex flex-col items-center">
           <div className="mb-2">
-            <Avatar user={otherUser} />
+            {conversation?.isGroup ? (
+              <AvatarGroup users={conversation.users} />
+            ) : (
+              <Avatar user={otherUser} />
+            )}
           </div>
           <div>{title}</div>
           <div className="text-sm text-gray-500">{statusTest}</div>
@@ -68,7 +73,7 @@ const ProfileDrawer = ({
           </div>
           <div className="w-full pb-5 pt-5 sm:px-0 sm:pt-0">
             <div className="space-y-8 px-4 sm:space-y-6 sm:px-6">
-              {!conversation.isGroup && (
+              {!conversation.isGroup ? (
                 <>
                   <div>
                     <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
@@ -84,6 +89,28 @@ const ProfileDrawer = ({
                   <div>
                     <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
                       Joined
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
+                      <time dateTime={joinedDate}>{joinedDate}</time>
+                    </dd>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                      Emails
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
+                      {conversation.users.map((user) => user.email).join(", ")}
+                    </dd>
+                  </div>
+
+                  <hr />
+
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                      Created at
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                       <time dateTime={joinedDate}>{joinedDate}</time>
