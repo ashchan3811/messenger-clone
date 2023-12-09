@@ -11,6 +11,7 @@ import { IConversationWithUsers } from "@/types";
 
 import DeleteConversationModal from "./DeleteConversationModal";
 import AvatarGroup from "@/components/AvatarGroup";
+import useCurrentUserActive from "@/hooks/useCurrentUserActive";
 
 interface ProfileDrawerProps {
   conversation: IConversationWithUsers;
@@ -26,6 +27,8 @@ const ProfileDrawer = ({
   const otherUser = useOtherUser(conversation);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
+  const isActive = useCurrentUserActive(otherUser);
+
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
   }, [otherUser.createdAt]);
@@ -39,8 +42,8 @@ const ProfileDrawer = ({
       return `${conversation.users.length} members`;
     }
 
-    return "Active";
-  }, [conversation]);
+    return isActive ? "Active" : "Offline";
+  }, [conversation, isActive]);
 
   return (
     <>

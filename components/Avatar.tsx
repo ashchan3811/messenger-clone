@@ -1,6 +1,6 @@
 "use client";
 
-import useActiveUserList from "@/hooks/useActiveUserList";
+import useCurrentUserActive from "@/hooks/useCurrentUserActive";
 import { User } from "@prisma/client";
 import Image from "next/image";
 
@@ -9,8 +9,7 @@ interface AvatarProps {
 }
 
 const Avatar = ({ user }: AvatarProps) => {
-  const { members } = useActiveUserList();
-  const isActive = members.indexOf(user?.email!) > -1;
+  const isActive = useCurrentUserActive(user);
 
   return (
     <div className="relative">
