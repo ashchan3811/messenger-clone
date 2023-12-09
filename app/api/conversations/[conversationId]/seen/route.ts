@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import _ from "lodash";
 
 import db from "@/lib/db";
-import { IConversationParams } from "@/types";
+import { IConversationParams, PUSHER_EVENTS } from "@/types";
 import getCurrentUser from "@/actions/getCurrentUser";
+import { pusherServer } from "@/lib/pusher";
 
 export async function POST(
   req: Request,
@@ -56,6 +57,25 @@ export async function POST(
         },
       },
     });
+
+    await pusherServer.trigger(
+      currentUser.email,
+      PUSHER_EVENTS.CONVERSATION.UPDATE,
+      {
+        id: params.conversationId,
+        messages: [updatedMessage],
+      },
+    );
+
+    if (lastMessage.seenIds.indexOf(currentUser.id) > -1) {
+      return NextResponse.json(conversation);
+    }
+
+    await pusherServer.trigger(
+      params.conversationId,
+      PUSHER_EVENTS.MESSAGE.UPDATE,
+      updatedMessage,
+    );
 
     return NextResponse.json(updatedMessage);
   } catch (err) {

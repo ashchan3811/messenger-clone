@@ -40,6 +40,15 @@ export async function POST(req: Request) {
           },
         },
       },
+      include: {
+        sender: {
+          select: {
+            name: true,
+            email: true,
+            image: true,
+          },
+        },
+      },
     });
 
     const updatedConversation = await db.conversation.update({
@@ -59,6 +68,13 @@ export async function POST(req: Request) {
         messages: {
           include: {
             seen: true,
+            sender: {
+              select: {
+                name: true,
+                email: true,
+                image: true,
+              },
+            },
           },
         },
       },
@@ -66,15 +82,15 @@ export async function POST(req: Request) {
 
     await pusherServer.trigger(
       conversationId,
-      PUSHER_EVENTS.newMessage,
+      PUSHER_EVENTS.MESSAGE.NEW,
       newMessage,
     );
 
     const lastMessage = _.last(updatedConversation.messages);
     updatedConversation.users.map((user) => {
-      pusherServer.trigger(user.email!, PUSHER_EVENTS.updateConversation, {
+      pusherServer.trigger(user.email!, PUSHER_EVENTS.CONVERSATION.UPDATE, {
         id: conversationId,
-        message: [lastMessage],
+        messages: [lastMessage],
       });
     });
 

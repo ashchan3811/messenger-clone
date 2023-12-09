@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import _ from "lodash";
 
 import db from "@/lib/db";
-import _ from "lodash";
-import { IConversationParams } from "@/types";
+import { IConversationParams, PUSHER_EVENTS } from "@/types";
 import getCurrentUser from "@/actions/getCurrentUser";
+import { pusherServer } from "@/lib/pusher";
 
 export async function DELETE(
   req: Request,
@@ -35,6 +36,12 @@ export async function DELETE(
           hasSome: [currentUser.id],
         },
       },
+    });
+
+    conversation.users.forEach((user) => {
+      if (user.email) {
+        pusherServer.trigger(user.email!, PUSHER_EVENTS.CONVERSATION.DELETE, params);
+      }
     });
 
     return NextResponse.json(deletedConversation);

@@ -24,6 +24,13 @@ export type IConversationWithUsers = Conversation & {
 };
 
 export const PUSHER_EVENTS = {
-  newMessage: "messages:new",
-  updateConversation: "conversation:update",
+  MESSAGE: {
+    NEW: "NEW",
+    UPDATE: "UPDATE",
+  },
+  CONVERSATION: {
+    NEW: "NEW",
+    UPDATE: "UPDATE",
+    DELETE: "DELETE",
+  },
 };

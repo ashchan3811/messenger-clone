@@ -9,7 +9,7 @@ import useConversation from "@/hooks/useConversation";
 
 const useRoutes = () => {
   const pathName = usePathname();
-  const { conersationId } = useConversation();
+  const { conversationId } = useConversation();
 
   const routes = useMemo(() => {
     return [
@@ -17,7 +17,7 @@ const useRoutes = () => {
         label: "Chat",
         href: "/conversations",
         icon: HiChat,
-        active: pathName === "/conversations" || !!conersationId,
+        active: pathName === "/conversations" || !!conversationId,
       },
       {
         label: "Users",
@@ -32,7 +32,7 @@ const useRoutes = () => {
         onClick: () => signOut(),
       },
     ];
-  }, [pathName, conersationId]);
+  }, [pathName, conversationId]);
 
   return routes;
 };

@@ -2,6 +2,8 @@ import getCurrentUser from "@/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 
 import db from "@/lib/db";
+import { pusherServer } from "@/lib/pusher";
+import { PUSHER_EVENTS } from "@/types";
 
 export async function POST(req: Request) {
   try {
@@ -41,6 +43,16 @@ export async function POST(req: Request) {
         include: {
           users: true,
         },
+      });
+
+      groupChat.users.forEach((user) => {
+        if (user.email) {
+          pusherServer.trigger(
+            user.email,
+            PUSHER_EVENTS.CONVERSATION.NEW,
+            groupChat,
+          );
+        }
       });
 
       return NextResponse.json(groupChat);
@@ -87,6 +99,16 @@ export async function POST(req: Request) {
       include: {
         users: true,
       },
+    });
+
+    newConversation.users.map((user) => {
+      if (user.email) {
+        pusherServer.trigger(
+          user.email,
+          PUSHER_EVENTS.CONVERSATION.NEW,
+          newConversation,
+        );
+      }
     });
 
     return NextResponse.json(newConversation);

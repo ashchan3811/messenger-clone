@@ -48,10 +48,7 @@ const DeleteConfirmModal = ({
         <Button
           type="button"
           variant={"danger"}
-          onClick={() => {
-            console.log("click", btnText);
-            onClick();
-          }}
+          onClick={onClick}
           disabled={disabled}
         >
           {btnText}
